@@ -39,3 +39,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# AI / agent stuff stays on this machine
+/.ai/
+/.serena/
+/.claude/
+/.history/
+AGENTS.md
+CLAUDE.md
+CLAUDE.local.md
+GEMINI.md
+.cursorrules
+.mcp.json

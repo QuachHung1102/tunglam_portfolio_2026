@@ -1,26 +1,292 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-nen: #051430;
+  --color-dem: #020c24;
+  --color-cyan: #33d4ff;
+  --color-sang: #46d3ff;
+  --color-xanh: #0575ff;
+  --color-do: #ef4136;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Avilock has no Vietnamese marks, Oswald quietly fills in the Ừ and Ớ */
+  --font-tieu-de: var(--chu-avilock), var(--chu-oswald), sans-serif;
+  --font-than: var(--chu-roboto), sans-serif;
+  --font-hep: var(--chu-roboto-hep), sans-serif;
+  --font-inter: var(--chu-inter), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* everything custom sits under the utilities, so a className can always win */
+@layer components {
+  html {
+    scrollbar-gutter: stable;
+    background: var(--color-nen);
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* look, don't take. no selecting, no dragging photos out, no long-press save on phones */
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  img,
+  svg {
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+
+  /* the open popup holds the page still */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* The stage. Phones get a plain column, 1024px+ gets the Figma frame,
+     every item pinned at its design coords and scaled with the width.   */
+  /* ------------------------------------------------------------------ */
+
+  .san {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding: 2.5rem 1.25rem 3.5rem;
+  }
+
+  .san .vat {
+    position: relative;
+  }
+
+  /* photo pile on phones: two per row */
+  .nhom {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .nhom > .rong {
+    grid-column: 1 / -1;
+  }
+
+  /* tablets: still a column, just not a 780px-wide one */
+  @media (min-width: 768px) and (max-width: 1023.98px) {
+    .san {
+      max-width: 720px;
+      padding-inline: 2rem;
+    }
+  }
+
+  .anh.vat {
+    width: 100%;
+    aspect-ratio: var(--w) / var(--h);
+  }
+
+  .chu {
+    font-size: max(14px, calc(var(--c) * 0.62px));
+    line-height: var(--l, 1.2);
+    letter-spacing: calc(var(--ls, 0) * 1em);
+    white-space: pre-line;
+  }
+
+  /* desktop-only garnish */
+  .chi-lg {
+    display: none !important;
+  }
+
+  @media (min-width: 1024px) {
+    .san {
+      display: block;
+      padding: 0;
+      aspect-ratio: var(--rong, 1440) / calc(var(--cao) - var(--dy, 0));
+      container-type: inline-size;
+      overflow: clip;
+    }
+
+    .san .vat {
+      position: absolute;
+      left: calc(var(--x) * 100cqw / var(--rong, 1440));
+      top: calc((var(--y) - var(--dy, 0)) * 100cqw / var(--rong, 1440));
+      width: calc(var(--w) * 100cqw / var(--rong, 1440));
+      height: calc(var(--h) * 100cqw / var(--rong, 1440));
+      aspect-ratio: auto;
+    }
+
+    .san .chu {
+      font-size: calc(var(--c) * 100cqw / var(--rong, 1440));
+    }
+
+    .san .nhom {
+      display: contents;
+    }
+
+    .chi-lg {
+      display: revert !important;
+    }
+
+    .an-lg {
+      display: none !important;
+    }
+  }
+
+  /* Avilock only draws capitals anyway; this keeps Oswald's fill-ins in caps too */
+  .td {
+    font-family: var(--font-tieu-de);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: var(--l, 1);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Little HUD tricks                                                    */
+  /* ------------------------------------------------------------------ */
+
+  /* photos lean in and pick up a cyan rim on hover */
+  .anh-soi {
+    transition: box-shadow 0.4s;
+  }
+
+  .anh-soi img {
+    transition: scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  @media (hover: hover) {
+    .anh-soi:hover {
+      box-shadow: 0 0 0 2px var(--color-cyan), 0 0 28px rgb(51 212 255 / 0.45);
+      z-index: 2;
+    }
+
+    .anh-soi:hover img {
+      scale: 1.05;
+    }
+  }
+
+  /* glare sweep, like tilting a trophy under the lights (React Bits GlareHover, CSS only) */
+  .loa-sang {
+    overflow: hidden;
+  }
+
+  .loa-sang::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, transparent 60%, rgb(255 255 255 / 0.55) 70%, transparent 80%);
+    background-size: 250% 250%;
+    background-position: 100% 100%;
+    pointer-events: none;
+    transition: background-position 0.8s ease;
+  }
+
+  @media (hover: hover) {
+    .loa-sang:hover::after {
+      background-position: -100% -100%;
+    }
+  }
+
+  /* scanline that sweeps the hero now and then */
+  @keyframes quet {
+    from {
+      translate: 0 -10%;
+    }
+    to {
+      translate: 0 1100%;
+    }
+  }
+
+  /* hero layers: spin, breathe */
+  @keyframes xoay-lop {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes tho-lop {
+    50% {
+      opacity: 0.82;
+    }
+  }
+
+  @keyframes troi {
+    50% {
+      translate: 0 -14px;
+    }
+  }
+
+  @keyframes nhap-nhay {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* parked until GSAP brings them in. noscript in the layout undoes this */
+    [data-hien],
+    [data-tach] {
+      visibility: hidden;
+    }
+
+    .troi {
+      animation: troi 5s ease-in-out infinite;
+    }
+  }
+
+  /* popups skip the scroll reveal, they play their own entrance */
+  dialog [data-hien],
+  dialog [data-tach] {
+    visibility: visible !important;
+  }
+
+  /* HUD boot: a thin cyan line first, then it unfolds top and bottom */
+  @keyframes bat-khung {
+    0% {
+      clip-path: inset(49.5% 0 49.5% 0);
+      opacity: 0.3;
+    }
+    35% {
+      clip-path: inset(49.5% 0 49.5% 0);
+      opacity: 1;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* the paper sheet lands like it was tossed onto the desk */
+  @keyframes mo-giay {
+    from {
+      opacity: 0;
+      scale: 0.7;
+      rotate: -6deg;
+    }
+  }
+
+  @keyframes mo-dan {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hop-hud[open] {
+      animation: bat-khung 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .hop-giay[open] {
+      animation: mo-giay 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.1);
+    }
+
+    .hop-thoai[open]::backdrop {
+      animation: mo-dan 0.3s ease-out;
+    }
+  }
+
+  /* the photo strip loops: the track holds two copies, slide one copy's width */
+  @keyframes chay-ngang {
+    to {
+      translate: -50% 0;
+    }
+  }
 }

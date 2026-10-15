@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  // photos go out exactly as Lam uploaded them. no resizing, no webp, no funny business
+  images: {
+    unoptimized: true,
+  },
   turbopack: {
     rules: {
       "*.css": {
