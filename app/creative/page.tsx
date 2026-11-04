@@ -51,8 +51,8 @@ export default function SangTao() {
   return (
     <main className="flex-1">
       <h1 className="sr-only">Creative and Passion</h1>
-      <San cao={4110} dich={72}>
-        <Anh src="/hinh/chung/nen-hud.png" x={-1} y={136} w={1441} h={886} mo={0.3} nhoe={8.9} hien={false} className="chi-lg" />
+      {/* the frame stops at the camera box (y 3706); the spacer below centres the camera on screen */}
+      <San cao={3706} dich={72}>
 
         {/* ---------- origami ---------- */}
         <DoVat ten="Origami" anh={{ src: `${H}/do-vat/01.png`, alt: "Paper lotus", w: 540, h: 462 }} x={436} y={479} tre={0} tiLe={1356 / 846}>
@@ -138,6 +138,9 @@ export default function SangTao() {
           </San>
         </DoVat>
       </San>
+      {/* scrolled to the end, the camera sits mid-screen under the nav. its visible middle is design y 3358.75,
+          347.25 design px above the frame's end; the png has wide transparent margins, hence not the box middle */}
+      <div aria-hidden className="chi-lg" style={{ height: "max(0px, calc((100dvh - 72px) / 2 - 347.25 * 100vw / 1440))" }} />
       <HieuUngCuon />
     </main>
   );

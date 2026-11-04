@@ -16,7 +16,8 @@ const chuAvilock = localFont({
 // stand-in for the accented letters Avilock can't draw (TỪ THIỆN, LƯU...)
 const chuOswald = Oswald({ subsets: ["vietnamese"], weight: "700", variable: "--chu-oswald" });
 
-const chuRoboto = Roboto({ subsets: ["latin", "vietnamese"], weight: ["400", "500"], variable: "--chu-roboto" });
+// italic is for the institute / prize lines on Research
+const chuRoboto = Roboto({ subsets: ["latin", "vietnamese"], weight: ["400", "500"], style: ["normal", "italic"], variable: "--chu-roboto" });
 
 const chuRobotoHep = Roboto_Condensed({ subsets: ["latin", "vietnamese"], weight: "400", variable: "--chu-roboto-hep" });
 
@@ -43,7 +44,9 @@ export default function BoCucGoc({ children }: LayoutProps<"/">) {
           <style>{`[data-hien],[data-tach]{visibility:visible!important}`}</style>
         </noscript>
       </head>
-      <body className="flex min-h-full flex-col overflow-x-clip bg-nen font-than text-white">
+      {/* no bg on body: it would paint over the fixed backdrop. html carries the navy */}
+      <body className="flex min-h-full flex-col overflow-x-clip font-than text-white">
+        <div aria-hidden className="nen-co-dinh" />
         <ThanhDieuHuong />
         {children}
         <ChongSaoChep />

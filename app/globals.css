@@ -42,6 +42,17 @@
     overflow: hidden;
   }
 
+  /* the blurred HUD stays put while text and photos scroll over it (layout.tsx) */
+  .nen-co-dinh {
+    position: fixed;
+    inset: -12px;
+    z-index: -1;
+    background: url(/hinh/chung/nen-hud.png) center / cover no-repeat;
+    opacity: 0.3;
+    filter: blur(4.45px);
+    pointer-events: none;
+  }
+
   /* ------------------------------------------------------------------ */
   /* The stage. Phones get a plain column, 1024px+ gets the Figma frame,
      every item pinned at its design coords and scaled with the width.   */
@@ -98,8 +109,10 @@
   }
 
   @media (min-width: 1024px) {
+    /* edge to edge: the frame scales with the window, no empty bands on wide screens */
     .san {
       display: block;
+      max-width: none;
       padding: 0;
       aspect-ratio: var(--rong, 1440) / calc(var(--cao) - var(--dy, 0));
       container-type: inline-size;
@@ -266,6 +279,45 @@
   @keyframes mo-dan {
     from {
       opacity: 0;
+    }
+  }
+
+  /* intro: a photo pops onto the HUD */
+  @keyframes bat-len {
+    from {
+      opacity: 0;
+      scale: 0.6;
+    }
+  }
+
+  /* intro: a label pointer draws itself out from the globe */
+  @keyframes ve-duong {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+  }
+
+  /* intro end: the screen flares white before My Story */
+  @keyframes loe-sang {
+    0% {
+      opacity: 0;
+    }
+    45% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* "click to go on": three chevrons light up in turn */
+  @keyframes nhay-mui-ten {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
     }
   }
 

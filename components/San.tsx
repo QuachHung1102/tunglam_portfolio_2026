@@ -90,8 +90,6 @@ export function Hinh({ src, alt = "", w, h, cat, vua, bienDoi, goc, taiTruoc, si
 type ThuocTinhAnh = ToaDo &
   ThuocTinhHinh & {
   mo?: number;
-  // Figma layer blur, in Figma px
-  nhoe?: number;
   soi?: boolean;
   hien?: boolean;
   rong?: boolean;
@@ -100,11 +98,11 @@ type ThuocTinhAnh = ToaDo &
 };
 
 // a photo pinned on the stage
-export function Anh({ mo, nhoe, soi, hien = true, rong, className = "", children, x, y, ...hinh }: ThuocTinhAnh) {
+export function Anh({ mo, soi, hien = true, rong, className = "", children, x, y, ...hinh }: ThuocTinhAnh) {
   return (
     <div
       className={`vat anh overflow-hidden ${soi ? "anh-soi" : ""} ${rong ? "rong" : ""} ${className}`}
-      style={bien({ x, y, w: hinh.w, h: hinh.h }, { opacity: mo, filter: nhoe ? `blur(${nhoe / 2}px)` : undefined })}
+      style={bien({ x, y, w: hinh.w, h: hinh.h }, { opacity: mo })}
       data-hien={hien ? "" : undefined}
     >
       <Hinh {...hinh} />
@@ -133,7 +131,8 @@ type ThuocTinhChu = Omit<ToaDo, "h"> & {
 };
 
 export function Chu({ f, c, l, ls, canh, dam, mau, as: The = "p", tach, className = "", children, ...toaDo }: ThuocTinhChu) {
-  const canhLe = canh === "justified" ? "text-justify" : canh === "center" ? "text-center" : canh === "right" ? "text-right" : "";
+  // justified only on the wide stage: in a phone column it opens rivers between words
+  const canhLe = canh === "justified" ? "lg:text-justify" : canh === "center" ? "text-center" : canh === "right" ? "text-right" : "";
   return (
     <The
       className={`vat chu ${PHONG[f]} ${dam ? DAM[dam] : ""} ${canhLe} ${className}`}

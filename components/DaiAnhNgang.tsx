@@ -10,20 +10,22 @@ type ThuocTinh = {
   y: number;
   w: number;
   h: number;
+  // one full lap of photos, Figma px; longer than the box when the row runs off the frame
+  dai?: number;
   giay?: number;
 };
 
 // Figma note on this strip: "(LƯU Ý: DẢI ẢNH NÀY LÀ CUỘN NGANG)". so it scrolls sideways.
 // desktop: the design's layout loops forever (React Bits LogoLoop vibe), hover to stop it.
 // phones: a plain swipeable row with snap
-export default function DaiAnhNgang({ cacAnh, x, y, w, h, giay = 45 }: ThuocTinh) {
+export default function DaiAnhNgang({ cacAnh, x, y, w, h, dai = w, giay = 45 }: ThuocTinh) {
   const ban = (an: boolean) => (
     <div aria-hidden={an || undefined} className="relative h-full w-1/2 shrink-0">
       {cacAnh.map((a) => (
         <div
           key={a.src}
           className="anh-soi absolute overflow-hidden"
-          style={{ left: `${(a.x / w) * 100}%`, top: `${(a.y / h) * 100}%`, width: `${(a.w / w) * 100}%`, height: `${(a.h / h) * 100}%` }}
+          style={{ left: `${(a.x / dai) * 100}%`, top: `${(a.y / h) * 100}%`, width: `${(a.w / dai) * 100}%`, height: `${(a.h / h) * 100}%` }}
         >
           <Hinh {...a} alt={an ? "" : a.alt} sizes="25vw" />
         </div>
@@ -39,8 +41,9 @@ export default function DaiAnhNgang({ cacAnh, x, y, w, h, giay = 45 }: ThuocTinh
         data-hien=""
       >
         <div
-          className="flex h-full w-[200%] motion-safe:animate-[chay-ngang_var(--giay)_linear_infinite] group-hover:[animation-play-state:paused]"
-          style={{ "--giay": `${giay}s` } as React.CSSProperties}
+          className="flex h-full motion-safe:animate-[chay-ngang_var(--giay)_linear_infinite] group-hover:[animation-play-state:paused]"
+          // two laps side by side; sliding one lap left loops seamlessly
+          style={{ "--giay": `${giay}s`, width: `${((2 * dai) / w) * 100}%` } as React.CSSProperties}
         >
           {ban(false)}
           {ban(true)}

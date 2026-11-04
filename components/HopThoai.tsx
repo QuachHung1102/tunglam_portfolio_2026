@@ -17,14 +17,14 @@ type ThuocTinh = {
 };
 
 const NUT_DONG = {
-  // sits inside the cyan bar on desktop, its own cyan chip on phones
-  hud: "text-dem max-lg:bg-cyan lg:top-[8.5%] lg:right-[1.5%] lg:text-[clamp(28px,3vw,44px)]",
+  // top-right corner inside the frame on desktop, its own cyan chip on phones
+  hud: "max-lg:bg-cyan max-lg:text-dem lg:top-[6%] lg:right-[2.5%] lg:text-cyan lg:text-[clamp(28px,3vw,44px)]",
   // black ink on the paper corner
   giay: "text-black max-lg:bg-white lg:top-[2%] lg:right-[1.5%] lg:text-[clamp(28px,3vw,44px)]",
 };
 
 // native <dialog>: Esc, focus trap and the top layer come free. we only add the entrance
-export default function HopThoai({ nut, nhan, loai = "hud", tiLe = 854 / 575, className = "", kieu, children }: ThuocTinh) {
+export default function HopThoai({ nut, nhan, loai = "hud", tiLe = 964 / 561, className = "", kieu, children }: ThuocTinh) {
   const hop = useRef<HTMLDialogElement>(null);
 
   return (

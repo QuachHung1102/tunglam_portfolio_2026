@@ -46,6 +46,7 @@ next-env.d.ts
 /.serena/
 /.claude/
 /.history/
+/.playwright-mcp/
 AGENTS.md
 CLAUDE.md
 CLAUDE.local.md

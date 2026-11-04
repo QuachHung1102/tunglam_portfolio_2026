@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cacTrang } from "@/data/cacTrang";
 
-// the black bar from Figma: 72px tall, Avilock 24, white pipes between links
+// the black bar from Figma: 72px tall, Avilock 24, white pipes between links, full window width
 export default function ThanhDieuHuong() {
   const duongDan = usePathname();
   const [mo, datMo] = useState(false);
@@ -14,10 +15,20 @@ export default function ThanhDieuHuong() {
     <header className="sticky top-0 z-50 bg-black">
       <nav
         aria-label="Main"
-        className="td mx-auto flex h-[72px] max-w-360 items-center justify-between px-5 text-[20px] text-white lg:pr-[62px] lg:pl-[45px] lg:text-[length:clamp(17px,1.667vw,24px)]"
+        className="td flex h-[72px] items-center justify-between px-5 text-[20px] text-white lg:pr-[62px] lg:pl-[45px] lg:text-[length:clamp(17px,1.667vw,24px)]"
       >
-        <Link href="/" className="transition-colors hover:text-cyan" onClick={() => datMo(false)}>
+        {/* name + Earth both lead home, to the intro */}
+        <Link href="/" className="group flex items-center gap-[clamp(10px,1.1vw,16px)] transition-colors hover:text-cyan" onClick={() => datMo(false)}>
           Tung Lam Folio
+          <Image
+            src="/hinh/chung/trai-dat.png"
+            alt=""
+            width={47}
+            height={47}
+            preload
+            draggable={false}
+            className="size-[clamp(34px,3.26vw,47px)] rounded-full transition-[scale,filter] duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_12px_#33d4ff]"
+          />
         </Link>
 
         {/* phones get a burger, there's no room for five links */}
